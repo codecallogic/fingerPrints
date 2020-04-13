@@ -1,6 +1,6 @@
 const User      = require('../models/users')
 const jwt       = require('jsonwebtoken')
-const SECRET    = process.evn.SECRET
+const SECRET    = process.env.SECRET
 
 module.exports = {
     signup,
