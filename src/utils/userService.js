@@ -1,5 +1,14 @@
-import tokenService from './tokenService'
+import tokenService from './tokenService' 
 const BASE_URL = "/api/users/"
+
+export default {
+    signup,
+    getUser,
+}
+
+function getUser(){
+    return tokenService.getUserFromToken()
+}
 
 function signup(user){
     return fetch(BASE_URL + 'signup', {
@@ -13,5 +22,3 @@ function signup(user){
     })
     .then(({token}) => tokenService.setToken(token))
 }
-
-export default {signup}
