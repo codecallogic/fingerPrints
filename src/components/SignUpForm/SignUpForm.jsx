@@ -22,6 +22,7 @@ class SignUpForm extends Component{
         e.preventDefault()
         try {
             await userService.signup(this.state)
+            this.props.handleSignupOrLogin()
             this.props.history.push('/')
         } catch(err) {
             this.props.updateMessage(err.message)
@@ -65,7 +66,6 @@ class SignUpForm extends Component{
 
                     <div className="group">
                         <center> <button type="submit" className="btn btn-outline-light">Create Account<span className="glyphicon glyphicon-send"></span></button></center>
-                        <Link to='/'>Cancel</Link>
                     </div>
                 
                 </form>

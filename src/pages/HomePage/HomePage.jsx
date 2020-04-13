@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import React from 'react';
+import Navbar from '../../components/Navbar/Navbar'
 
-class HomePage extends Component {
-    render (){
-        return (
-        <Link to="/signup">Sign Up</Link>
-        )
-    }
+const HomePage = (props) => {
+    return (
+        <Navbar 
+            user={props.user} 
+            handleLogout={props.handleLogout}
+        />
+    )
 }
 
 export default HomePage
