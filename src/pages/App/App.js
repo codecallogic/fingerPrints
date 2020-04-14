@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HomePage from '../HomePage/HomePage'
 import LoginPage from '../LoginPage/LoginPage'
 import SignUpPage from '../SignUpPage/SignUpPage'
+import Piano from '../../components/Piano/Piano'
 import './App.css';
 import { Route, Switch } from 'react-router-dom'
 import userService from '../../utils/userService'
@@ -37,6 +38,12 @@ class App extends Component {
           <LoginPage
             history={history}
             handleSignupOrLogin={this.handleSignupOrLogin}
+          />
+        }
+        />
+        <Route exact path={"/piano"} render={({history}) => 
+          <Piano
+            history={history}
           />
         }
         />

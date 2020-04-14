@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import userService from '../../utils/userService'
 import './SignUpForm.css'
-import { Link } from 'react-router-dom'
 
 class SignUpForm extends Component{
     state = {

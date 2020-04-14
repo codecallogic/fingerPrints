@@ -4,11 +4,11 @@ const SECRET    = process.env.SECRET
 
 module.exports = {
     signup,
-    login,
+    login
 }
 
 async function login(req, res){
-    console.log(req.body.email)
+    console.log(req.body)
     try {
         const user = await User.findOne({email: req.body.email})
         if(!user) return res.status(401).json({err: 'Bad credentials'})
@@ -26,6 +26,7 @@ async function login(req, res){
 }
 
 async function signup(req, res){
+    console.log(req.body)
     try {
         const user = await User.create(req.body)
         const token = createJWT(user)
