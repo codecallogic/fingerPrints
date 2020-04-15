@@ -12,7 +12,17 @@ const PianoCom = () => {
         keyboardConfig: KeyboardShortcuts.HOME_ROW,
     });
 
-    const synth = new Tone.Synth()
+    const synth = new Tone.Synth({
+        oscillator : {
+            type : 'sine'
+            } ,
+            envelope : {
+            attack : .4 ,
+            decay : 0.5 ,
+            sustain : 1 ,
+            release : 1
+        }
+    })
 
     synth.toMaster()
     
