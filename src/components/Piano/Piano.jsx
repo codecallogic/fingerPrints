@@ -1,38 +1,41 @@
-import React, { Component } from 'react';
-import "./Piano.css"
+import React from 'react';
+import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import 'react-piano/dist/styles.css';
+import * as Tone from 'tone'
 
-const Piano = () => {
-    const WHITE_KEYS = ['z', 'x', 'c', 'v', 'b', 'n', 'm']
-    const BLACK_KEYS = ['s', 'd', 'g', 'h', 'j']
+const PianoCom = () => {
+    const firstNote = MidiNumbers.fromNote('c3');
+    const lastNote = MidiNumbers.fromNote('f5');
+    const keyboardShortcuts = KeyboardShortcuts.create({
+        firstNote: firstNote,
+        lastNote: lastNote,
+        keyboardConfig: KeyboardShortcuts.HOME_ROW,
+    });
 
-    const keys = document.querySelectorAll('.key')
+    const synth = new Tone.Synth()
 
-    keys.forEach(key => {
-        key.addEventListener('click', () => playNote(key))
-    })
+    synth.toMaster()
     
-    function playNote(key) {
-        const noteAudio = document.getElementById(key.dataset.note)
-    }
-    return (
-        <div id="pianoContainer">
-            <div class="piano">
-                <div data-note="C" class="key white"></div>
-                <div data-note="Db" class="key black"></div>
-                <div data-note="D" class="key white"></div>
-                <div data-note="Eb" class="key black"></div>
-                <div data-note="E" class="key white"></div>
-                <div data-note="F" class="key white"></div>
-                <div data-note="Gb" class="key black"></div>
-                <div data-note="G" class="key white"></div>
-                <div data-note="Ab" class="key black"></div>
-                <div data-note="A" class="key white"></div>
-                <div data-note="Bb" class="key black"></div>
-                <div data-note="B" class="key white"></div>
-            </div>
+  return (
+    <div className="container-fluid">
+    <div className="row">
+        <div className="col-2"></div>
+        <div className="col-10">
+            <Piano
+                noteRange={{ first: firstNote, last: lastNote }}
+                playNote={(midiNumber) => {
+                    synth.triggerAttackRelease(midiNumber, '8n')
+                }}
+                stopNote={(midiNumber) => {
+                    // Stop playing a given note - see notes below
+                }}
+                width={1000}
+                keyboardShortcuts={keyboardShortcuts}
+            />
         </div>
-    )    
+    </div>
+    </div>
+  )
 }
 
-export default Piano
-
+export default PianoCom
