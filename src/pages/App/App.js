@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import HomePage from '../HomePage/HomePage'
 import LoginPage from '../LoginPage/LoginPage'
 import SignUpPage from '../SignUpPage/SignUpPage'
-import PianoCom from '../../components/Piano/Piano'
+import SequencePage from '../SequencePage/SequencePage'
 import './App.css';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import userService from '../../utils/userService'
+import songService from '../../utils/songService'
 
 class App extends Component {
   constructor() {
@@ -22,6 +23,12 @@ class App extends Component {
   
   handleSignupOrLogin = () => {
     this.setState({user: userService.getUser()})
+  }
+
+  async componentDidMount(){
+    const songs = await songService.getSongs()
+    console.log(songs)
+    console.log(this.state.user)
   }
   
   render () {
@@ -41,8 +48,10 @@ class App extends Component {
           />
         }
         />
-        <Route exact path={"/piano"} render={({history}) => 
-          <PianoCom
+        <Route exact path={"/tuneroom"} render={({history}) =>  
+          <SequencePage
+            user={this.state.user}
+            handleLogout={this.handleLogout}
             history={history}
           />
         }

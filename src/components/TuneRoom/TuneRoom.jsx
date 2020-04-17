@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import * as Tone from 'tone'
-import "./Piano.css"
+import "./TuneRoom.css"
 import songService from '../../utils/songService';
 
-class PianoCom extends Component {
+class PianoKeyboard extends Component {
     state = {
         display: true, 
         active: false,
@@ -28,11 +28,22 @@ class PianoCom extends Component {
     }
 
     saveSong = async () => {
+        console.log(this.props.user)
+        if(this.props.user){
         try {
             await songService.createSong(this.state.songNotes)
-            this.props.history.push('/')
+            this.setState({
+                display: true,
+                active: false,
+                recordingStartTime: 0,
+                songNotes: [],
+            })
+            this.props.history.push('/tuneroom')
         }catch(err){
             console.log(err)
+        }
+        }else{
+            this.props.history.push('/login')
         }
     }
     
@@ -69,13 +80,13 @@ class PianoCom extends Component {
   return (
     <div className="container-fluid">
     <div className="row">
-        <div className="col-2"></div>
+        <div className="col-1 ml-5"></div>
         <div className="col-10">
             
             {!this.state.active && this.state.display && <button className="record-button btn btn-light" onClick={this.toggle}>Record</button>}
             {this.state.active && this.state.display && <button className="btn btn-light active" onClick={this.toggle}>Recording</button>}
 
-            <button className="btn btn-light" onClick={() => {
+            {!this.state.display && <button className="btn btn-light" onClick={() => {
                     if(this.state.songNotes.length === 0) return
                     this.state.songNotes.forEach(note => {
                         setTimeout(() => {
@@ -83,9 +94,9 @@ class PianoCom extends Component {
                         }, note.startTime)
                     })
                 }
-            }>Play</button>
+            }>Play</button>}
 
-            <button className="btn btn-light" onClick={this.saveSong}>Save</button>
+            {!this.state.display && <button className="btn btn-light" onClick={this.saveSong}>Save</button>}
             
             <Piano
                 noteRange={{ first: firstNote, last: lastNote }}
@@ -116,4 +127,4 @@ class PianoCom extends Component {
 }
 }
 
-export default PianoCom
+export default PianoKeyboard
