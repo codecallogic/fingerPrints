@@ -6,7 +6,7 @@ import "./TuneRoom.css"
 import songService from '../../utils/songService'
 import io from 'socket.io-client'
 
-const socket = io.connect('http://localhost:3001')
+const socket = io.connect('https://fingertones.herokuapp.com')
 
 socket.on('play-note', function(data){
     console.log(data)
