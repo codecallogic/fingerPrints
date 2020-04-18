@@ -17,7 +17,7 @@ function getUser(){
 }
 
 function signup(user){
-    return fetch(BASE_URL + 'signup', {
+    return fetch(BASE_URL + 'signup', { 
         method: 'POST',
         headers: new Headers({'content-type': 'application/json'}),
         body: JSON.stringify(user)
