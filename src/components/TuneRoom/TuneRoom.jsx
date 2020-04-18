@@ -4,6 +4,9 @@ import 'react-piano/dist/styles.css';
 import * as Tone from 'tone'
 import "./TuneRoom.css"
 import songService from '../../utils/songService';
+// import io from 'socket.io-client'
+
+// export const socket = io.connect('http://localhost:3001');
 
 class PianoKeyboard extends Component {
     state = {
@@ -44,7 +47,7 @@ class PianoKeyboard extends Component {
         }else{
             this.props.history.push('/login')
         }
-    }
+    }   
     
     render () {
     const firstNote         = MidiNumbers.fromNote('c1');

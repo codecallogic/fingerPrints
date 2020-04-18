@@ -27,8 +27,15 @@ class Instruments extends Component{
         const newSynth = this.state.synth
         newSynth.oscillator.type = oscillatorType.target.value
         this.setState({synth: newSynth})
-        newSynth.frequency._param.value = 1
-        console.log(newSynth.frequency._param.value)
+        newSynth.triggerAttackRelease('C4', '16n')
+    }
+
+    updatePartials = (oscillatorPartials) => {
+        const partials = oscillatorPartials === 'none' ? '' : oscillatorPartials
+        const newSynth = this.state.synth
+        newSynth.oscillator.type = `${newSynth.oscillator.type}${partials.target.value}`
+        console.log(newSynth)
+        this.setState({synth: newSynth})
         newSynth.triggerAttackRelease('C4', '16n')
     }
     
@@ -85,17 +92,18 @@ class Instruments extends Component{
                             <option value="sawtooth">Sawtooth</option>
                             <option value="sine">Sine</option>
                             <option value="square">Square</option>
-                            <option value="pulse">Pulse</option>
                         </select>
                     </div>}
                     {this.state.oscillator && <div className="form-group">
                         <p className="text-left">Partials</p>
-                        <select name="oscillator" id="" className="form-control" onChange={this.updateOscillator}>
-                            <option value="triangle">Triangle</option>
-                            <option value="sawtooth">Sawtooth</option>
-                            <option value="sine">Sine</option>
-                            <option value="square">Square</option>
-                            <option value="pulse">Pulse</option>
+                        <select name="oscillator-partials" id="" className="form-control" onChange={this.updatePartials}>
+                            <option value="none">None</option>
+                            <option value="2">2</option>
+                            <option value="4">4</option>
+                            <option value="8">8</option>
+                            <option value="16">16</option>
+                            <option value="32">32</option>
+                            <option value="64">64</option>
                         </select>
                     </div>}
                 </form>

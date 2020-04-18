@@ -4,10 +4,6 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 
 const app = express();
-const http = require('http')
-const server = http.createServer(app)
-const io = require('./io')
-io.attach(server)
 
 require('dotenv').config()
 require('./config/database')
@@ -28,8 +24,15 @@ app.get('/*', function(req, res) {
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, function() {
+const server = app.listen(port, function() {
   console.log(`Express app running on port ${port}`)
 });
 
-// server.listen(port, () => console.log(`Server to port ${port}`))
+const io = require('socket.io').listen(server);
+
+io.on('connection', (socket) => {
+    console.log('We have a new connection!!!')
+    socket.on('disconnect', () => {
+      console.log('User has left!')
+    })
+})
