@@ -6,12 +6,6 @@ import "./TuneRoom.css"
 import songService from '../../utils/songService'
 import io from 'socket.io-client'
 
-const socket = io.connect('https://fingertones.herokuapp.com')
-
-socket.on('play-note', function(data){
-    console.log(data)
-})
-
 class PianoKeyboard extends Component {
     state = {
         display: true, 
@@ -54,6 +48,8 @@ class PianoKeyboard extends Component {
     }   
     
     render () {
+    const localhost         = 'http://localhost:3001'
+    const heroku            = 'https://fingertones.herokuapp.com/'
     const firstNote         = MidiNumbers.fromNote('c1');
     const lastNote          = MidiNumbers.fromNote('A2');
     const keyboardShortcuts = KeyboardShortcuts.create({
@@ -82,6 +78,13 @@ class PianoKeyboard extends Component {
         synth.triggerAttackRelease(key, '8n')
         console.log(`${key} play`)
     }
+
+    const socket = io.connect(heroku)
+
+    socket.on('play-note', function(data){
+        console.log(data)
+        synth.triggerAttackRelease(data.note, '8n')
+    })
     
   return (
     <div className="container-fluid">
@@ -120,8 +123,8 @@ class PianoKeyboard extends Component {
                     socket.emit('play-note', {
                         note: midiNumber
                     })
-                    synth.triggerAttackRelease(midiNumber, '8n')
-                    console.log(this.state.songNotes)
+                    // synth.triggerAttackRelease(midiNumber, '8n')
+                    // console.log(this.state.songNotes)
                 }}
                 stopNote={(midiNumber) => {
                     // Stop playing a given note - see notes below
