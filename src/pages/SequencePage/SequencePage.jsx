@@ -3,7 +3,6 @@ import Navbar from '../../components/Navbar/Navbar'
 import PianoKeyboard from '../../components/TuneRoom/TuneRoom'
 
 const HomePage = (props) => {
-    console.log(props.socket)
     return (
         <div>
         <Navbar 

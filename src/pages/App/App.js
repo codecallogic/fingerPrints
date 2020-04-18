@@ -8,17 +8,12 @@ import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import userService from '../../utils/userService'
 import songService from '../../utils/songService'
-import io from 'socket.io-client'
-
-const socketClient = io.connect('http://localhost:3001')
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
        user: userService.getUser(),
-       socket: null
-
     }
   }
 
@@ -35,9 +30,6 @@ class App extends Component {
 
   async componentDidMount(){
     const songs = await songService.getSongs()
-    this.setState({
-      socket: socketClient
-    })
     console.log(songs)
     console.log(this.state.user)
   }

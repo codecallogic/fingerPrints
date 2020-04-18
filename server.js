@@ -31,7 +31,9 @@ const server = app.listen(port, function() {
 const io = require('socket.io').listen(server);
 
 io.on('connection', (socket) => {
-    console.log('We have a new connection!!!')
+    socket.on('play-note', function(data){
+       io.emit('play-note', data)
+    })
     socket.on('disconnect', () => {
       console.log('User has left!')
     })

@@ -3,10 +3,14 @@ import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import * as Tone from 'tone'
 import "./TuneRoom.css"
-import songService from '../../utils/songService';
-// import io from 'socket.io-client'
+import songService from '../../utils/songService'
+import io from 'socket.io-client'
 
-// export const socket = io.connect('http://localhost:3001');
+const socket = io.connect('http://localhost:3001')
+
+socket.on('play-note', function(data){
+    console.log(data)
+})
 
 class PianoKeyboard extends Component {
     state = {
@@ -26,11 +30,11 @@ class PianoKeyboard extends Component {
             active: !this.state.active,
             recordingStartTime: Date.now()
         })
-        console.log(this.state.recordingStartTime)
+        // console.log(this.state.recordingStartTime)
     }
 
     saveSong = async () => {
-        console.log(this.props.user)
+        // console.log(this.props.user)
         if(this.props.user){
         try {
             await songService.createSong(this.state.songNotes)
@@ -113,6 +117,9 @@ class PianoKeyboard extends Component {
                             }
                         )
                     }
+                    socket.emit('play-note', {
+                        note: midiNumber
+                    })
                     synth.triggerAttackRelease(midiNumber, '8n')
                     console.log(this.state.songNotes)
                 }}
