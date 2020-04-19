@@ -1,6 +1,17 @@
 export default {
     Synth,
     AMSynth,
+    PluckSynth,
+    Reverb
+}
+
+function Reverb(){
+    const settings = 
+    {
+        roomSize  : 0,
+        dampening  : 0
+    }
+    return settings
 }
 
 function Synth(){
@@ -38,5 +49,14 @@ function AMSynth(){
         release : 0.5
         }
         }
+    return settings
+}
+
+function PluckSynth(){
+    const settings = {
+        attackNoise : 1 ,
+        dampening : 4000 ,
+        resonance : 0.7
+    }
     return settings
 }

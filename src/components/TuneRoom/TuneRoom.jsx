@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import * as Tone from 'tone'
-import "./TuneRoom.css"
 import songService from '../../utils/songService'
 import io from 'socket.io-client'
+import Instruments from '../Instruments/Instruments';
 
 class PianoKeyboard extends Component {
     state = {
@@ -12,6 +12,7 @@ class PianoKeyboard extends Component {
         active: false,
         recordingStartTime: 0,
         songNotes: [],
+        props: this.props,
     }
 
     toggle = () => {
@@ -45,7 +46,13 @@ class PianoKeyboard extends Component {
         }else{
             this.props.history.push('/login')
         }
-    }   
+    }
+
+
+    
+    componentDidMount(){
+        console.log(this.state.props)
+    }
     
     render () {
     const localhost         = 'http://localhost:3001'
@@ -58,17 +65,7 @@ class PianoKeyboard extends Component {
         keyboardConfig: KeyboardShortcuts.HOME_ROW,
     });
     
-    const synth = new Tone.Synth({
-        oscillator : {
-            type : 'sine'
-            },
-            envelope : {
-            attack : .01 ,
-            decay : 0.1 ,
-            sustain : .8 ,
-            release : 1
-        }
-    })
+    const synth = this.state.props.synth
 
     synth.volume.value = 8
 
@@ -79,10 +76,9 @@ class PianoKeyboard extends Component {
         console.log(`${key} play`)
     }
 
-    const socket = io.connect(heroku)
+    const socket = io.connect(localhost)
 
     socket.on('play-note', function(data){
-        console.log(data)
         synth.triggerAttackRelease(data.note, '8n')
     })
     
@@ -121,7 +117,7 @@ class PianoKeyboard extends Component {
                         )
                     }
                     socket.emit('play-note', {
-                        note: midiNumber
+                        note: midiNumber,
                     })
                     // synth.triggerAttackRelease(midiNumber, '8n')
                     // console.log(this.state.songNotes)

@@ -30,8 +30,8 @@ class App extends Component {
 
   async componentDidMount(){
     const songs = await songService.getSongs()
-    console.log(songs)
-    console.log(this.state.user)
+    // console.log(songs)
+    // console.log(this.state.user)
   }
   
   render () {
@@ -56,7 +56,6 @@ class App extends Component {
             user={this.state.user}
             handleLogout={this.handleLogout}
             history={history}
-            socket={this.state.socket}
           />
         }
         />
