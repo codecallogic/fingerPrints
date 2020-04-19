@@ -364,6 +364,12 @@ class Instruments extends Component{
                                         }
                                     )
                                 }
+
+                                var audioContext;
+
+                                if(!audioContext){
+                                    audioContext = new AudioContext;
+                                } 
                                
                                 socket.emit('play-note', {note: midiNumber})
                             }}
