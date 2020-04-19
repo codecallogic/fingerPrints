@@ -219,6 +219,10 @@ class Instruments extends Component{
             // console.log(data)
             const newSynth = this.state.synth
             const note = Tone.Midi(data.note).toNote()
+            // const audioContext = new AudioContext();
+            // console.log(audioContext.state); //suspended
+            // audioContext.resume();
+            Tone.context.resume()
             console.log(note)
             newSynth.triggerAttackRelease(note, '8n')
         })
@@ -353,7 +357,6 @@ class Instruments extends Component{
                         {this.state.synth !== null && <Piano
                             noteRange={{ first: firstNote, last: lastNote }}
                             playNote={(midiNumber) => {
-                                const state = this.state
                                 if(this.state.active){
                                     const obj = {'key': midiNumber, 'startTime': Date.now() - this.state.recordingStartTime}
                                     console.log(this.state.recordingStartTime)
@@ -365,11 +368,6 @@ class Instruments extends Component{
                                     )
                                 }
 
-                                var audioContext;
-
-                                if(!audioContext){
-                                    audioContext = new AudioContext;
-                                } 
                                
                                 socket.emit('play-note', {note: midiNumber})
                             }}
