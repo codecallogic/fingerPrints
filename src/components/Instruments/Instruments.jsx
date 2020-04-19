@@ -11,7 +11,7 @@ import io from 'socket.io-client'
 
 const localhost         = 'http://localhost:3001'
 const heroku            = 'https://fingertones.herokuapp.com/'
-const socket            = io.connect(localhost)
+const socket            = io.connect(heroku)
 
 class Instruments extends Component{
     constructor() {
@@ -219,7 +219,7 @@ class Instruments extends Component{
             // console.log(data)
             const newSynth = this.state.synth
             const note = Tone.Midi(data.note).toNote()
-            // console.log(note)
+            console.log(note)
             newSynth.triggerAttackRelease(note, '8n')
         })
 
