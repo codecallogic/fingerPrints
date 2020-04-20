@@ -96,7 +96,6 @@ class Instruments extends Component{
             this.props.history.push('/instruments')
         }catch(err){
             console.log(err)
-            console.log('What')
         }
         }else{
             this.props.history.push('/login')
