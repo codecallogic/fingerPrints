@@ -10,7 +10,7 @@ import InstrumentsSettings from './InstrumentsSettings'
 import io from 'socket.io-client'
 
 const localhost         = 'http://localhost:3001'
-const heroku            = 'https://fingertones.herokuapp.com/'
+const heroku            = 'https://instatone.herokuapp.com/'
 const socket            = io.connect(heroku)
 
 class Instruments extends Component{
@@ -59,6 +59,18 @@ class Instruments extends Component{
         }
     }
 
+    recordNote = (note) => {
+        console.log(note)
+        // console.log(this.state.currRecordingTime)
+        // const currRecordingTime = Date.now() - this.recordingStartTime
+        // this.setState({
+        //     songNotes: [...this.state.songNotes, note],
+        //     recordingStartTime: currRecordingTime,
+        // })
+        console.log(this.state.songNotes)
+        // console.log(this.state.currRecordingTime)
+    }
+
     toggle = () => {
         if(this.state.songNotes.length !== 0){
             this.setState({
@@ -81,9 +93,10 @@ class Instruments extends Component{
                 recordingStartTime: 0,
                 songNotes: [],
             })
-            this.props.history.push('/tuneroom')
+            this.props.history.push('/instruments')
         }catch(err){
             console.log(err)
+            console.log('What')
         }
         }else{
             this.props.history.push('/login')
@@ -131,9 +144,7 @@ class Instruments extends Component{
         let text = param.target.value.replace(/[0-9]/g, '');
         if(number < 8){number++}
         if(text === 'C'){text = 'B'}else if(text === 'F'){text = 'B'}
-        console.log(number)
         const newendNote = `${text}${number}`
-        console.log(newendNote)
         this.setState({endNote: newendNote})
     }
 
@@ -211,6 +222,12 @@ class Instruments extends Component{
         this.setState({piano: true, settings: false})
     }
 
+    playNote = (key, length) => {
+        const newSynth = this.state.synth
+        Tone.context.resume()
+        newSynth.triggerAttackRelease(key, length)
+    }
+
     render () {
         const firstNote         = MidiNumbers.fromNote(this.state.startNote);
         const lastNote          = MidiNumbers.fromNote(this.state.endNote);
@@ -220,13 +237,10 @@ class Instruments extends Component{
             keyboardConfig: KeyboardShortcuts.HOME_ROW,
         });
 
-        function playNote(key){
-            // synth.triggerAttackRelease(key, '8n')
-        }
-
         socket.on('play-note', (data) => {
             const newSynth = this.state.synth
             const note = Tone.Midi(data.note).toNote()
+            this.recordNote(note)
             Tone.context.resume()
             console.log(note)
             newSynth.triggerAttackRelease(note, this.state.noteLength)
@@ -387,29 +401,18 @@ class Instruments extends Component{
                 
                 </div>
                 <div className="col-10">
-                    
-                    
-
-                    {/* {!this.state.active && this.state.display && <button className="record-button btn btn-light" onClick={this.toggle}>Record</button>}
-                    {this.state.active && this.state.display && <button className="btn btn-light active" onClick={this.toggle}>Recording</button>}
-        
-                    {!this.state.display && <button className="btn btn-light" onClick={() => {
-                            if(this.state.songNotes.length === 0) return
-                            this.state.songNotes.forEach(note => {
-                                setTimeout(() => {
-                                    playNote(note.key)
-                                }, note.startTime)
-                            })
-                        }
-                    }>Play</button>}
-        
-                    {!this.state.display && <button className="btn btn-light" onClick={this.saveSong}>Save</button>} */}
+                   
                     
                     {this.state.synth !== null && <Piano
                         noteRange={{ first: firstNote, last: lastNote }}
                         playNote={(midiNumber) => {
                             if(this.state.active){
-                                const obj = {'key': midiNumber, 'startTime': Date.now() - this.state.recordingStartTime}
+                                const obj = {
+                                    'key': Tone.Midi(midiNumber).toNote(), 
+                                    'startTime': Date.now() - this.state.recordingStartTime,
+                                    'noteLength': this.state.noteLength,
+                                    'email': this.props.user.email,
+                                }
                                 console.log(this.state.recordingStartTime)
                                 const joined = this.state.songNotes.concat(obj);
                                 this.setState(
@@ -427,6 +430,20 @@ class Instruments extends Component{
                         width={1000}
                         keyboardShortcuts={keyboardShortcuts}
                     />}
+                     {!this.state.active && this.state.display && <button className="record-button btn btn-light" onClick={this.toggle}>Record</button>}
+                    {this.state.active && this.state.display && <button className="btn btn-light active" onClick={this.toggle}>Recording</button>}
+        
+                    {!this.state.display && <button className="btn btn-light" onClick={() => {
+                            if(this.state.songNotes.length === 0) return
+                            this.state.songNotes.forEach(note => {
+                                setTimeout(() => {
+                                    this.playNote(note.key, note.noteLength)
+                                }, note.startTime)
+                            })
+                        }
+                    }>Play</button>}
+        
+                    {!this.state.display && <button className="btn btn-light" onClick={this.saveSong}>Save</button>}
 
                     {!this.state.settings && <button className="btn btn-light mr-5" name="settings" onClick={this.changeSettings}>Change Settings</button>}
                 </div>

@@ -14,6 +14,7 @@ const InstrumentsPage = (props) => {
         <Instruments 
             user={props.user} 
             handleLogout={props.handleLogout}
+            history={props.history}
         />
         :
         <Redirect to='/login' />

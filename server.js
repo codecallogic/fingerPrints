@@ -32,7 +32,6 @@ const io = require('socket.io').listen(server);
 
 io.on('connection', (socket) => {
     socket.on('play-note', function(data){
-        // io.broadcast.emit('play-note', data)
        io.emit('play-note', data)
     })
     socket.on('disconnect', () => {

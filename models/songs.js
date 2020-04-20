@@ -3,11 +3,19 @@ const Schema        = mongoose.Schema
 
 const notesSchema    = new Schema({
     key: {
-        type: Number,
+        type: String,
         require: true,
     },
     startTime: {
         type: Number,
+        required: true
+    },
+    noteLength: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
         required: true
     }
 })

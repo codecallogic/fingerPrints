@@ -30,7 +30,7 @@ const Navbar = (props) => {
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-3">
         <div className="container">
-            <a className="navbar-brand" href="/">IntstaTone</a>
+            <a className="navbar-brand" href="/">InstaTone</a>
             <ul className="navbar-nav">
                 {nav}
             </ul>

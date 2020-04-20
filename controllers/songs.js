@@ -7,6 +7,7 @@ module.exports = {
 
 async function create(req, res){
     console.log(req.user)
+    console.log(req.body[0])
     try {
         const song = new Song({
             notes: req.body
