@@ -1,8 +1,8 @@
-# RECOVERY
+# INSTATONE
 
-A medical, health, and wellness app built with patient recovery process in mind. 
+A real time mini basic digital work station. 
 
-When a user logs in, they are able to select symptoms and receive possible diagnoses. With a diagnosis, they are able to create customized trackers to monitor things such as symptom ratings, nutrition intake, weight, exercise, or anything else they would like. This is done by adding numeric values which are then presented to the user via a line graph.
+When a user logs in, they are able to configure the the type of synth they would like to use from a list of default synths provided. With customizable settings the user can generate a unique sound to their liking. In the tune room the user will have a piano displayed where they will be able to play music with others logged on in real time.
 
 <img src="/images/landingpage.png">
 
@@ -12,20 +12,17 @@ When a user logs in, they are able to select symptoms and receive possible diagn
 
 <img src="/images/pianopage.png">
 
-<b>TECHNOLOGIES USED:</b> Python, Django, JavaScript, HTML, CSS, Bootstrap, Chart.JS
+<b>TECHNOLOGIES USED:</b> MongoDB/Mongoose, Express, React, Node, Sockets
 
 ## GETTING STARTED
 
-[<b>HEROKU</b>](https://recovery-tracker-app.herokuapp.com/)
+[<b>HEROKU</b>](https://instatone.herokuapp.com/)
 <br>
-[<b>TRELLO</b>](https://trello.com/b/uG9P0yHg/recovery)
+[<b>TRELLO</b>](https://trello.com/b/cO7vgX4T/instatone)
 <br>
-[<b>PITCHDECK</b>](https://docs.google.com/presentation/d/1K5ZJkF4MmetE6jlGCA4KSX09QP7zpad-oKhemmi836Q/edit#slide=id.p)
-
 
 ## NEXT STEPS
 
-- Auto-generated trackers based on diagnoses
-- Doctor-Patient portal where doctors can create customized trackers for their patients and monitor progress
-- Patient-to-patient support messaging
-- Medication/tracking reminders
+- Send instrument data to all users and play the same sound generated locally
+- Add more instruments
+- Upgrade song functionality to replay and update song
