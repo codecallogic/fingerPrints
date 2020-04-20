@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# RECOVERY
 
-## Available Scripts
+A medical, health, and wellness app built with patient recovery process in mind. 
 
-In the project directory, you can run:
+When a user logs in, they are able to select symptoms and receive possible diagnoses. With a diagnosis, they are able to create customized trackers to monitor things such as symptom ratings, nutrition intake, weight, exercise, or anything else they would like. This is done by adding numeric values which are then presented to the user via a line graph.
 
-### `npm start`
+<img src="/images/landingpage.png">
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<img src="/images/signuppage.png">
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+<img src="/images/instrumentspage.png">
 
-### `npm test`
+<img src="/images/pianopage.png">
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<b>TECHNOLOGIES USED:</b> Python, Django, JavaScript, HTML, CSS, Bootstrap, Chart.JS
 
-### `npm run build`
+## GETTING STARTED
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[<b>HEROKU</b>](https://recovery-tracker-app.herokuapp.com/)
+<br>
+[<b>TRELLO</b>](https://trello.com/b/uG9P0yHg/recovery)
+<br>
+[<b>PITCHDECK</b>](https://docs.google.com/presentation/d/1K5ZJkF4MmetE6jlGCA4KSX09QP7zpad-oKhemmi836Q/edit#slide=id.p)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## NEXT STEPS
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Auto-generated trackers based on diagnoses
+- Doctor-Patient portal where doctors can create customized trackers for their patients and monitor progress
+- Patient-to-patient support messaging
+- Medication/tracking reminders
