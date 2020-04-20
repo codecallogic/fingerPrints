@@ -20,10 +20,14 @@ class Instruments extends Component{
                 display: true, 
                 active: false,
                 piano: false,
+                settings: true,
                 recordingStartTime: 0,
                 songNotes: [],
                 synth: null,
                 oscillator: false,
+                startNote: 'C1',
+                endNote: 'B2',
+                noteLength: '1m',
                 envelop: false,
                 filter: new Tone.Filter().toMaster(),
                 reverb: new Tone.Freeverb(InstrumentSettings.Reverb()),
@@ -65,7 +69,6 @@ class Instruments extends Component{
             active: !this.state.active,
             recordingStartTime: Date.now()
         })
-        // console.log(this.state.recordingStartTime)
     }
 
     saveSong = async () => {
@@ -116,7 +119,9 @@ class Instruments extends Component{
     }
 
     updatePartials = (oscillatorPartials) => {
-        const partials = oscillatorPartials === 'none' ? '' : oscillatorPartials
+        console.log(oscillatorPartials.target.value)
+        const partials = oscillatorPartials.target.value === 'none' ? '' : oscillatorPartials
+        console.log(partials.target.value)
         const newSynth = this.state.synth
         newSynth.oscillator.type = newSynth.oscillator.type.replace(/\d+$/, "")
         // console.log(newSynth.oscillator.type.replace(/\d+$/, ""))
@@ -127,7 +132,28 @@ class Instruments extends Component{
     }
 
     booleanTrue = (param) => {
+        // console.log(param.target.name)
         this.setState({[param]: true})
+    }
+    
+    updateNote = (param) => {
+        this.setState({[param.target.name]: param.target.value})
+        let number = param.target.value.replace(/\D/g,'')
+        let text = param.target.value.replace(/[0-9]/g, '');
+        if(number < 8){number++}
+        if(text === 'C'){text = 'B'}else if(text === 'F'){text = 'B'}
+        console.log(number)
+        const newendNote = `${text}${number}`
+        console.log(newendNote)
+        this.setState({endNote: newendNote})
+    }
+
+    updateNoteLength = (param) => {
+        this.setState({noteLength: param.target.value})
+    }
+
+    changeSettings = (param) => {
+        this.setState({[param.target.name]: true, piano: false})
     }
 
     booleanFalse = (param) => {
@@ -193,18 +219,18 @@ class Instruments extends Component{
     play = (e) => {
         e.preventDefault()
         const synth = this.state.synth
-        console.log(synth)
-        synth.triggerAttackRelease('C8', '8n')
+        // console.log(synth)
+        synth.triggerAttackRelease(this.state.startNote, this.state.noteLength)
     }
 
     showPiano = (e) => {
         e.preventDefault()
-        this.setState({piano: true})
+        this.setState({piano: true, settings: false})
     }
 
     render () {
-        const firstNote         = MidiNumbers.fromNote('C4');
-        const lastNote          = MidiNumbers.fromNote('A5');
+        const firstNote         = MidiNumbers.fromNote(this.state.startNote);
+        const lastNote          = MidiNumbers.fromNote(this.state.endNote);
         const keyboardShortcuts = KeyboardShortcuts.create({
             firstNote: firstNote,
             lastNote: lastNote,
@@ -216,19 +242,16 @@ class Instruments extends Component{
         }
 
         socket.on('play-note', (data) => {
-            // console.log(data)
             const newSynth = this.state.synth
             const note = Tone.Midi(data.note).toNote()
-            // const audioContext = new AudioContext();
-            // console.log(audioContext.state); //suspended
-            // audioContext.resume();
             Tone.context.resume()
             console.log(note)
-            newSynth.triggerAttackRelease(note, '8n')
+            newSynth.triggerAttackRelease(note, this.state.noteLength)
         })
 
         return (
-            <div className="container">
+            <div>
+            {this.state.settings && <div className="container">
                 <form action="">
                     <div className="form-group">
                         <p className="display-3 text-left">Synthesizer</p>
@@ -280,7 +303,7 @@ class Instruments extends Component{
                     {this.state.oscillator && <div className="form-group">
                         <p className="text-left">Partials</p>
                         <select name="oscillator-partials" id="" className="form-control" onChange={this.updatePartials}>
-                            <option value="none">None</option>
+                            <option value="">None</option>
                             <option value="2">2</option>
                             <option value="4">4</option>
                             <option value="8">8</option>
@@ -303,14 +326,14 @@ class Instruments extends Component{
 
                     {this.state.envelope && <div className="form-group">
                         <p className="text-left">Sustain</p>
-                        <input type="range" min="1" max="5000" className="custom-range" onChange={this.updateEnvelope} name="sustain" value={this.state.range.envelope.sustain}/>
+                        <input type="range" min="1" max="1000" className="custom-range" onChange={this.updateEnvelope} name="sustain" value={this.state.range.envelope.sustain}/>
                         <output>{this.state.range.envelope.sustain}</output>
                     </div>}
 
 
                     {this.state.envelope && <div className="form-group">
                         <p className="text-left">Release</p>
-                        <input type="range" min="1" max="5000" className="custom-range" onChange={this.updateEnvelope} name="release" value={this.state.range.envelope.release}/>
+                        <input type="range" min="1" max="1000" className="custom-range" onChange={this.updateEnvelope} name="release" value={this.state.range.envelope.release}/>
                         <output>{this.state.range.envelope.release}</output>
                     </div>}
 
@@ -324,63 +347,109 @@ class Instruments extends Component{
 
                     {this.state.synth && <div className="form-group">
                         <p className="text-left">Reverb Dampening</p>
-                        <input type="range" min="0" max="10000" className="custom-range" onChange={this.updateReverb} name="dampening" value={this.state.range.reverb.dampening}/>
+                        <input type="range" min="0" max="1000" className="custom-range" onChange={this.updateReverb} name="dampening" value={this.state.range.reverb.dampening}/>
                         <output>{this.state.range.reverb.dampening}</output>
                     </div>}
 
-                    {this.state.synth !== null && <button onClick={this.play}>play</button>}
+                    {this.state.synth !== null && <h1 className="display-3 text-left">Midi Note</h1>}
 
-                    {this.state.synth !== null && <button onClick={this.showPiano}>Instrument Set Up</button>}
+                    {this.state.synth && <div className="form-group">
+                        <p className="text-left">Midi Note Start</p>
+                        <select name="startNote" id="" className="form-control" onChange={this.updateNote}>
+                            <option value="C1">C1</option>
+                            <option value="F1">F1</option>
+                            <option value="C2">C2</option>
+                            <option value="F2">F2</option>
+                            <option value="C3">C3</option>
+                            <option value="F3">F3</option>
+                            <option value="C4">C4</option>
+                            <option value="F4">F4</option>
+                            <option value="C5">C5</option>
+                            <option value="F5">F5</option>
+                            <option value="C6">C6</option>
+                            <option value="F6">F6</option>
+                            <option value="C7">C7</option>
+                        </select>
+                    </div>}
+
+                    {this.state.synth && <div className="form-group">
+                        <p className="text-left">Note Length</p>
+                        <select name="noteLength" id="" className="form-control" onChange={this.updateNoteLength}>
+                            <option value="1">1 Whole Note</option>
+                            <option value="2m">2 Mesures</option>
+                            <option value="3m">3 Mesures</option>
+                            <option value="4m">4 Mesures</option>
+                            <option value="2n">2n</option>
+                            <option value="4n">4n</option>
+                            <option value="8n">8n</option>
+                            <option value="8n.">Dotted 8n</option>
+                            <option value="16n">16n</option>
+                            <option value="32n">32n</option>
+                        </select>
+                    </div>}
+
+                    {this.state.synth !== null && <button className="btn btn-light" onClick={this.play}>play</button>}
+
+                    {this.state.synth !== null && <button className="btn btn-light" onClick={this.showPiano}>Instrument Is All Set Up</button>}
+
 
                 </form>
 
-                <div className="container-fluid">
-                <div className="row">
-                    <div className="col-1 ml-5"></div>
-                    <div className="col-10">
-                        
-                        {!this.state.active && this.state.display && <button className="record-button btn btn-light" onClick={this.toggle}>Record</button>}
-                        {this.state.active && this.state.display && <button className="btn btn-light active" onClick={this.toggle}>Recording</button>}
-            
-                        {!this.state.display && <button className="btn btn-light" onClick={() => {
-                                if(this.state.songNotes.length === 0) return
-                                this.state.songNotes.forEach(note => {
-                                    setTimeout(() => {
-                                        playNote(note.key)
-                                    }, note.startTime)
-                                })
-                            }
-                        }>Play</button>}
-            
-                        {!this.state.display && <button className="btn btn-light" onClick={this.saveSong}>Save</button>}
-                        
-                        {this.state.synth !== null && <Piano
-                            noteRange={{ first: firstNote, last: lastNote }}
-                            playNote={(midiNumber) => {
-                                if(this.state.active){
-                                    const obj = {'key': midiNumber, 'startTime': Date.now() - this.state.recordingStartTime}
-                                    console.log(this.state.recordingStartTime)
-                                    const joined = this.state.songNotes.concat(obj);
-                                    this.setState(
-                                        {
-                                            songNotes: joined,
-                                        }
-                                    )
-                                }
+                
+            </div>}
 
-                               
-                                socket.emit('play-note', {note: midiNumber})
-                            }}
-                            stopNote={(midiNumber) => {
-                                // Stop playing a given note - see notes below
-                            }}
-                            width={1000}
-                            keyboardShortcuts={keyboardShortcuts}
-                        />}
-                    </div>
+            {this.state.piano && <div className="container-fluid mt-5">
+            <div className="row">
+                <div className="col-1 ml-5">
+                
                 </div>
+                <div className="col-10">
+                    
+                    
+
+                    {/* {!this.state.active && this.state.display && <button className="record-button btn btn-light" onClick={this.toggle}>Record</button>}
+                    {this.state.active && this.state.display && <button className="btn btn-light active" onClick={this.toggle}>Recording</button>}
+        
+                    {!this.state.display && <button className="btn btn-light" onClick={() => {
+                            if(this.state.songNotes.length === 0) return
+                            this.state.songNotes.forEach(note => {
+                                setTimeout(() => {
+                                    playNote(note.key)
+                                }, note.startTime)
+                            })
+                        }
+                    }>Play</button>}
+        
+                    {!this.state.display && <button className="btn btn-light" onClick={this.saveSong}>Save</button>} */}
+                    
+                    {this.state.synth !== null && <Piano
+                        noteRange={{ first: firstNote, last: lastNote }}
+                        playNote={(midiNumber) => {
+                            if(this.state.active){
+                                const obj = {'key': midiNumber, 'startTime': Date.now() - this.state.recordingStartTime}
+                                console.log(this.state.recordingStartTime)
+                                const joined = this.state.songNotes.concat(obj);
+                                this.setState(
+                                    {
+                                        songNotes: joined,
+                                    }
+                                )
+                            }
+                            
+                            socket.emit('play-note', {note: midiNumber})
+                        }}
+                        stopNote={(midiNumber) => {
+                            // Stop playing a given note - see notes below
+                        }}
+                        width={1000}
+                        keyboardShortcuts={keyboardShortcuts}
+                    />}
+
+                    {!this.state.settings && <button className="btn btn-light mr-5" name="settings" onClick={this.changeSettings}>Change Settings</button>}
                 </div>
             </div>
+            </div>}
+        </div>
         )
     }
 }

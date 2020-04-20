@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import userService from '../../utils/userService'
 import Navbar from '../../components/Navbar/Navbar'
 import './LoginPage.css'
-import { Link } from 'react-router-dom'
 
 class LoginForm extends Component{
     state = {
