@@ -72,7 +72,6 @@ class Instruments extends Component{
     }
 
     saveSong = async () => {
-        // console.log(this.props.user)
         if(this.props.user){
         try {
             await songService.createSong(this.state.songNotes)
@@ -105,34 +104,24 @@ class Instruments extends Component{
         newTone.connect(this.state.filter)
         newTone.chain(this.state.reverb, this.state.gain)
         this.state.gain.chain(Tone.Master)
-        // newTone.triggerAttackRelease('C4', '16n')
     }
 
     updateOscillator = (oscillatorType) => {
         const newSynth = this.state.synth
         const number = newSynth.oscillator.type.replace(/\D/g,'')
-        console.log(number)
-        console.log(newSynth.oscillator.type)
         newSynth.oscillator.type = `${oscillatorType.target.value}${number}`
         this.setState({synth: newSynth})
-        // newSynth.triggerAttackRelease('C4', '16n')
     }
 
     updatePartials = (oscillatorPartials) => {
-        console.log(oscillatorPartials.target.value)
         const partials = oscillatorPartials.target.value === 'none' ? '' : oscillatorPartials
-        console.log(partials.target.value)
         const newSynth = this.state.synth
         newSynth.oscillator.type = newSynth.oscillator.type.replace(/\d+$/, "")
-        // console.log(newSynth.oscillator.type.replace(/\d+$/, ""))
         newSynth.oscillator.type = `${newSynth.oscillator.type}${partials.target.value}`
-        // console.log(newSynth.oscillator.type)
         this.setState({synth: newSynth})
-        // newSynth.triggerAttackRelease('C4', '16n')
     }
 
     booleanTrue = (param) => {
-        // console.log(param.target.name)
         this.setState({[param]: true})
     }
     
@@ -162,10 +151,8 @@ class Instruments extends Component{
 
     updateEnvelope = (e) => {
         const state = this.state.range
-        // console.log(e.target.value/100)
         state.envelope[e.target.name] = e.target.value
         this.setState({ range: state})
-        // console.log(state.envelope.attack)
         const synthEnvelope = this.state.synth
         synthEnvelope.envelope[e.target.name] = e.target.value/100
         this.setState({
@@ -181,11 +168,8 @@ class Instruments extends Component{
 
     updateFilterFrequency = (e) => {
         const state = this.state.range
-        // console.log(e.target.value/100)
         state.filter[e.target.name] = e.target.value
-        // state.filter.Q = -3
         this.setState({ range: state})
-        // console.log(state.envelope.attack)
         const filterFrequency = this.state.filter
         filterFrequency.frequency.value = e.target.value
         this.setState({
@@ -219,7 +203,6 @@ class Instruments extends Component{
     play = (e) => {
         e.preventDefault()
         const synth = this.state.synth
-        // console.log(synth)
         synth.triggerAttackRelease(this.state.startNote, this.state.noteLength)
     }
 
@@ -251,7 +234,7 @@ class Instruments extends Component{
 
         return (
             <div>
-            {this.state.settings && <div className="container">
+            {this.state.settings && <div className="container mt-5 mb-5">
                 <form action="">
                     <div className="form-group">
                         <p className="display-3 text-left">Synthesizer</p>

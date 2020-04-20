@@ -8,7 +8,7 @@ const Navbar = (props) => {
                 <a className="nav-link" href="/">Home</a>
             </li>
             <li className="nav-item">
-                <Link to="/tuneroom" className="nav-link">Tune Room</Link>
+                <Link to="/instruments" className="nav-link">Tune Room</Link>
             </li>
             <li className="nav-item">
                 <Link to='' className="nav-link" onClick={props.handleLogout}>Logout</Link>
@@ -18,9 +18,6 @@ const Navbar = (props) => {
         <React.Fragment>
             <li className="nav-item">
                 <a className="nav-link" href="/">Home</a>
-            </li>
-            <li className="nav-item">
-                <Link to="/tuneroom" className="nav-link">Tune Room</Link>
             </li>
             <li className="nav-item">
                 <Link to="/signup" className="nav-link">Sign Up</Link>
@@ -33,7 +30,7 @@ const Navbar = (props) => {
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-3">
         <div className="container">
-            <a className="navbar-brand" href="/">Navbar</a>
+            <a className="navbar-brand" href="/">IntstaTone</a>
             <ul className="navbar-nav">
                 {nav}
             </ul>
