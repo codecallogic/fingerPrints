@@ -2,7 +2,7 @@
 
 A real time mini basic digital work station. 
 
-When a user logs in, they are able to configure the the type of synth they would like to use from a list of default synths provided. With customizable settings the user can generate a unique sound to their liking. In the tune room the user will have a piano displayed where they will be able to play music with others logged on in real time.
+When a user logs in, they are able to configure the type of synth they would like to use from a list of default synths provided. With customizable settings the user can generate a unique sound to their liking. In the tune room the user will have a piano displayed where they will be able to play music with others logged on in real time.
 
 <img src="/images/landingpage.png">
 
